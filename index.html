@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ענת פרקש | סרטוני הדרכת לימוד שחייה</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            /* רקע מדורג עדין מאוד שנותן תחושת עומק וניקיון */
+            background: linear-gradient(135deg, #ffffff 0%, #f4f7fa 100%);
+            color: #0f172a;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* אפקט ריחוף מודרני לכרטיסיות */
+        .video-card-modern {
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .video-card-modern:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        /* סמן קטגוריה בולט */
+        .category-accent {
+            width: 48px;
+            height: 4px;
+            background: #1d4ed8;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+        }
+
+        /* התאמת נגן הוידאו */
+        video {
+            border-radius: 12px;
+            background: #000;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="nav-glass sticky top-0 z-50 px-8 py-5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="text-2xl font-black tracking-tighter text-blue-900">ענת פרקש</span>
+        </div>
+    </nav>
+
+    <header class="pt-24 pb-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-tight mb-4">
+                סרטוני הדרכת <br>
+                <span class="text-blue-700">לימוד שחייה</span>
+            </h1>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-8 pb-32">
+        <div id="video-gallery" class="space-y-24">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+    </main>
+
+    <footer class="bg-white/50 border-t border-slate-200 py-16 px-8">
+        <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+            <div class="w-10 h-1 bg-blue-700 mb-6 rounded-full"></div>
+            <h4 class="text-xl font-bold text-blue-900 mb-2">ענת פרקש</h4>
+            <p class="text-slate-400 text-sm font-medium">כל הזכויות שמורות © ענת פרקש</p>
+        </div>
+    </footer>
+
+    <script>
+        const DATA = [
+            {
+                category: "טכניקת חתירה",
+                description: "שיפור היעילות והמהירות במים דרך תרגילים ממוקדים.",
+                videos: [
+                    {
+                        title: "מנח גוף במים",
+                        description: "איך לשמור על גוף ישר ומאוזן כדי להפחית התנגדות.",
+                        url: "videos/body-position.mp4", // וודאי שהקובץ נמצא בתיקיית videos
+                        duration: "2:45"
+                    },
+                    {
+                        title: "עבודת רגליים נכונה",
+                        description: "טכניקת בעיטה מהאגן ולא מהברך.",
+                        url: "videos/kicking.mp4",
+                        duration: "3:20"
+                    }
+                ]
+            },
+            {
+                category: "נשימה והסתגלות",
+                description: "ביטחון עצמי במים עמוקים ושליטה בנשימה.",
+                videos: [
+                    {
+                        title: "נשימה צידית",
+                        description: "לימוד הוצאת האוויר בתוך המים ולקיחת אוויר מהצד.",
+                        url: "videos/breathing.mp4",
+                        duration: "4:10"
+                    }
+                ]
+            }
+        ];
+
+        function initGallery() {
+            const gallery = document.getElementById('video-gallery');
+
+            DATA.forEach(section => {
+                const sectionEl = document.createElement('section');
+
+                sectionEl.innerHTML = `
+                    <div>
+                        <div class="category-accent"></div>
+                        <h2 class="text-3xl font-black text-slate-900 mb-2">${section.category}</h2>
+                        <p class="text-slate-500 font-medium text-lg max-w-2xl">${section.description}</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+                            ${section.videos.map(v => `
+                                <div class="video-card-modern group">
+                                    <div class="relative aspect-video bg-slate-200 rounded-2xl overflow-hidden mb-5 shadow-sm border border-white">
+                                        <video class="w-full h-full object-cover" controls preload="metadata">
+                                            <source src="${v.url}" type="video/mp4">
+                                            הדפדפן שלך לא תומך בנגן הוידאו.
+                                        </video>
+                                        <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md">
+                                            ${v.duration}
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">${v.title}</h3>
+                                    <p class="text-slate-500 text-sm leading-relaxed">${v.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                gallery.appendChild(sectionEl);
+            });
+        }
+
+        window.onload = initGallery;
+    </script>
+</body>
+</html>
