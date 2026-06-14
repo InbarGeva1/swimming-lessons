@@ -39,18 +39,29 @@
             margin-bottom: 1rem;
         }
 
-        /* שורה חדשה בdescription */
+        /* תצוגה נכונה של ירידות שורה בתיאורים */
         .category-description {
             white-space: pre-line;
         }
 
-        /* העיצוב החדש והנקי של הנגן המקורי */
-        video {
+        /* מיכל רספונסיבי מושלם לנגן של גוגל דרייב בטלפונים ובמחשב */
+        .drive-video-container {
+            position: relative;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            padding-bottom: 56.25%; /* יחס 16:9 קבוע למניעת שוליים שחורים */
+            height: 0;
+            overflow: hidden;
             border-radius: 12px;
             background: #000;
+        }
+
+        .drive-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
         .search-container {
@@ -132,42 +143,24 @@
 
     <script>
         const DATA = [
-          // קטגוריה ראשונה
-          {
-              category:  "הסתגלות",
-              description: "ביטחון עצמי במים עמוקים ושליטה בנשימה.",
-              videos: [
-                  {
-                      // סרטון ראשון
-                      title: "דוגמה",
-                      description: "מלל לדוגמה",
-                      driveId: "PUT_FILE_ID_HERE_2"
-                 
-                  }
-              ]
-          },
-            // קטגוריה שנייה
             {
                 category: "טכניקת חתירה",
-               description: "לימוד סגנון החתירה, תנאים מקדימים:\n• מנח צידי בתנאים מקלים ביבשה ובמים, שוכבים על הרצפה, נשענים על הקיר\n• מנח צידי במים בסטטי ראש הצידה על כתף ראש למטה לחי צמודה לזרוע של היד המכוונת\n• נשימות ברוטציה קיר - סטטי - הוצאת בועות מהאף בהתחלה סיבוב יתר של הראש על מנת לאפשר נשימה.\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
+                description: "לימוד סגנון החתירה, תנאים מקדימים:\n• מנח צידי בתנאים מקלים ביבשה ובמים, שוכבים על הרצפה, נשענים על הקיר\n• מנח צידי במים בסטטי ראש הצידה על כתף ראש למטה לחי צמודה לזרוע של היד המכוונת\n• נשימות ברוטציה קיר - סטטי - הוצאת בועות מהאף בהתחלה סיבוב יתר של הראש על מנת לאפשר נשימה.\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
                 videos: [
                     {
-                        title: " נשימה ברוטציה - סטאטי",
+                        title: "נשימה ברוטציה - סטאטי",
                         description: "שלב לאחר מנח צידי במים סטאטי:\n• נשימה ברוטציה על הקיר (מצב סטאטי), הוצאת בועות מהאף בהתחלה, סיבוב יתר של הראש על מנת לאפשר נשימה. :\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
                         driveId: "1-iHbUNYfvMEdpwRYX_882bEG2WQvn_SR"
-                     
                     },
-                     {
+                    {
                         title: "מנח צידי בתנועה בתנאים מקלים",
                         description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
                         driveId: "1RSCpHwjDYE2l__Y0P9O0rCinpLJ8xa8r" 
-                 
                     },
                     {
                         title: "מנח צידי בתנועה בתנאים מקלים (אחיזה נוספת)",
                         description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
                         driveId: "1xrh7HIK6OPmONZn7Y9gziNXSOwBnHHee" 
-                 
                     },
                     {
                         title: "מנח צידי בתנועה בתנאים מקלים (אחיזת גיטרה)",
@@ -179,45 +172,41 @@
                         description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
                         driveId: "19SbWrkrSEl3wOURdyKJGS-oQLJ6CvYC6" 
                     },
-                
                     {
-                        title: "(1)מנח צידי בתנועה דינמי ",
-                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים,אופציה לאחיזת מדריך",
+                        title: "(1) מנח צידי בתנועה דינמי",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
                         driveId: "1JFQ4S4dfHmd2VZLuG_pXCkYBQ86DTugn" 
-                       
-                    },
-                     {
-                        title: "(2)מנח צידי בתנועה דינמי ",
-                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים,אופציה לאחיזת מדריך",
-                        driveId: "1J9hZufCNqT2GWHCoyCc4vb74QOfuX-V9"
-                      
                     },
                     {
-                        title: "(3)מנח צידי בתנועה דינמי - דוגמה נוספת ",
-                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים,אופציה לאחיזת מדריך",
+                        title: "(2) מנח צידי בתנועה דינמי",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1J9hZufCNqT2GWHCoyCc4vb74QOfuX-V9"
+                    },
+                    {
+                        title: "(3) מנח צידי בתנועה דינמי - דוגמה נוספת",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
                         driveId: "1Suaa8saLOPlVQyA94bng-Xu_Ihz2zEBu"
                     },
                     {
                         title: "מנח צידי בתנועה - ללא נשימה (1)",
-                        description: "מנח צידי דינמי ללא נשימה -  בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים ",
+                        description: "מנח צידי דינמי ללא נשימה - בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים",
                         driveId: "1faoEXHSSzwNMlRuNREV1vLQ7NbbhUAzq"
                     },
                     {
-                        title: "מנח צידי בתנועה - ראש סטאטי , פה לא נכנס למים(2)",
-                        description: "מנח צידי דינמי (ראש סטאטי, ללא הכנסת הפה למים) -  בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים :\n• להעביר לקראת סוף הסרטון",
+                        title: "מנח צידי בתנועה - ראש סטאטי, פה לא נכנס למים (2)",
+                        description: "מנח צידי דינמי (ראש סטאטי, ללא הכנסת הפה למים) - בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים :\n• להעביר לקראת סוף הסרטון",
                         driveId: "1SJhhGllBdpUzZXK0MORC94G4E0Y4Y44a"
                     },
                     {
                         title: "מנח צידי בתנועה - עם נשימה צידית (3)",
-                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים ",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים",
                         driveId: "1GByfr4vVK3yrubZt0bnLwNS_iOUx0MZ1"
                     },
-                     {
-                        title: " (אתגר זוגי) מנח צידי בתנועה - עם נשימה צידית ",
-                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה. תרגיל בזוג כאשר שני בני הזוג צריכים לנשום בתזמון  ",
+                    {
+                        title: "(אתגר זוגי) מנח צידי בתנועה - עם נשימה צידית",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה. תרגיל בזוג כאשר שני בני הזוג צריכים לנשום בתזמון",
                         driveId: "1Gp1sCo3QweKRrG5IYQjHwjqgHwXaMtJ7"
-                    },
-                
+                    }
                 ]
             }
         ];
@@ -256,16 +245,14 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                                 ${filteredVideos.map(v => `
                                     <div class="video-card-modern group">
-                                        <div class="relative aspect-video bg-slate-200 rounded-2xl overflow-hidden mb-5 shadow-sm border border-white">
-                                            <video
-                                                class="w-full h-full"
-                                                controls
-                                                playsinline
-                                                webkit-playsinline
-                                                preload="metadata">
-                                                <source src="https://docs.google.com/uc?export=download&id=${v.driveId}" type="video/mp4">
-                                                הדפדפן שלך לא תומך בנגן הוידאו.
-                                            </video>
+                                        <div class="relative mb-5 shadow-sm border border-white rounded-2xl overflow-hidden">
+                                            <div class="drive-video-container">
+                                                <iframe 
+                                                    src="https://drive.google.com/file/d/${v.driveId}/preview" 
+                                                    allow="autoplay" 
+                                                    allowfullscreen>
+                                                </iframe>
+                                            </div>
                                         </div>
                                         <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">${v.title}</h3>
                                         <p class="text-slate-500 text-sm leading-relaxed category-description">${v.description}</p>
