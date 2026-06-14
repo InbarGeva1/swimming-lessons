@@ -43,21 +43,12 @@
             white-space: pre-line;
         }
 
-        video, .drive-video iframe {
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 12px;
             background: #000;
-        }
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
         }
 
         .search-container {
@@ -243,11 +234,9 @@
             let hasResults = false;
 
             DATA.forEach(section => {
-                // בדיקה אם הקטגוריה או התיאור שלה תואמים לחיפוש
                 const categoryMatches = section.category.toLowerCase().includes(filterTerm) ||
                                        section.description.toLowerCase().includes(filterTerm);
 
-                // סינון הסרטונים בתוך הקטגוריה
                 const filteredVideos = section.videos.filter(v => {
                     return categoryMatches ||
                            v.title.toLowerCase().includes(filterTerm) ||
@@ -267,17 +256,18 @@
                                 ${filteredVideos.map(v => `
                                     <div class="video-card-modern group">
                                         <div class="relative aspect-video bg-slate-200 rounded-2xl overflow-hidden mb-5 shadow-sm border border-white">
-                                            <div class="video-wrapper">
-                                                <iframe
-                                                    class="drive-video"
-                                                    src="https://drive.google.com/file/d/${v.driveId}/preview"
-                                                    allow="autoplay"
-                                                    allowfullscreen>
-                                                </iframe>
-                                            </div>
+                                            <video
+                                                class="w-full h-full"
+                                                controls
+                                                playsinline
+                                                webkit-playsinline
+                                                preload="metadata">
+                                                <source src="https://docs.google.com/uc?export=download&id=${v.driveId}" type="video/mp4">
+                                                הדפדפן שלך לא תומך בנגן הוידאו.
+                                            </video>
                                         </div>
                                         <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">${v.title}</h3>
-                                        <p class="text-slate-500 text-sm leading-relaxed">${v.description}</p>
+                                        <p class="text-slate-500 text-sm leading-relaxed category-description">${v.description}</p>
                                     </div>
                                 `).join('')}
                             </div>
@@ -287,7 +277,6 @@
                 }
             });
 
-            // הצגת הודעה אם אין תוצאות
             noResults.classList.toggle('hidden', hasResults);
         }
 
