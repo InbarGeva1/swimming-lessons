@@ -38,6 +38,10 @@
             border-radius: 2px;
             margin-bottom: 1rem;
         }
+        // שורה חדשה בdescription
+        .category-description {
+            white-space: pre-line;
+        }
 
         video, .drive-video iframe {
             border-radius: 12px;
@@ -138,14 +142,14 @@
         const DATA = [
           // קטגוריה ראשונה
           {
-              category:  "הסתגלות בדיקה",
+              category:  "הסתגלות",
               description: "ביטחון עצמי במים עמוקים ושליטה בנשימה.",
               videos: [
                   {
                       // סרטון ראשון
                       title: "דוגמה",
                       description: "מלל לדוגמה",
-                      driveId: "1MUkRHS_80ot654u4B-EA0gi33_DDodZU"
+                      driveId: "PUT_FILE_ID_HERE_2"
                  
                   }
               ]
@@ -153,12 +157,12 @@
             // קטגוריה שנייה
             {
                 category: "טכניקת חתירה",
-                description: "לימוד סגנון החתירה",
+               description: "לימוד סגנון החתירה, תנאי מקדים:\n• מנח צידי בתנאים מקלים ביבשה ובמים, שוכבים על הרצפה, נשענים על הקיר\n• מנח צידי במים בסטטי ראש הצידה על כתף ראש למטה לחי צמודה לזרוע של היד המכוונת\n• נשימות ברוטציה קיר - סטטי - הוצאת בועות מהאף בהתחלה סיבוב יתר של הראש על מנת לאפשר נשימה.\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",,
                 videos: [
                     {
                         title: "מנח גוף במים",
                         description: "איך לשמור על גוף ישר ומאוזן כדי להפחית התנגדות.",
-                        driveId: "1vEloUOOFu8kRjuAVsM96hzTYOUwGP-m7"
+                        driveId: "PUT_FILE_ID_HERE_2"
                        
                     },
                     {
@@ -201,7 +205,7 @@
                         <div>
                             <div class="category-accent"></div>
                             <h2 class="text-3xl font-black text-slate-900 mb-2">${section.category}</h2>
-                            <p class="text-slate-500 font-medium text-lg max-w-2xl">${section.description}</p>
+                            <p class="text-slate-500 font-medium text-lg max-w-2xl category-description">${section.description}</p>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                                 ${filteredVideos.map(v => `
