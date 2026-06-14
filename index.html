@@ -27,7 +27,7 @@
         }
 
         .video-card-modern:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
         }
 
@@ -39,20 +39,21 @@
             margin-bottom: 1rem;
         }
 
-        /* תצוגה נכונה של ירידות שורה \n בתיאורים */
+        /* מאפשר תצוגה נכונה של ירידות שורה \n בטקסטים */
         .category-description {
             white-space: pre-line;
         }
 
-        /* מיכל רספונסיבי שמונע שוליים מעוותים ושומר על יחס 16:9 */
+        /* תיקון ארכיטקטורת הנגן: מונע בליעת לחיצות ומאפשר מגע ישיר בכפתורים */
         .drive-video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; 
+            padding-bottom: 56.25%; /* יחס זהב 16:9 מושלם למניעת שוליים */
             height: 0;
             overflow: hidden;
             border-radius: 12px;
             background: #000;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
 
         .drive-video-container iframe {
@@ -62,6 +63,7 @@
             width: 100%;
             height: 100%;
             border: 0;
+            z-index: 10; /* מבטיח שהנגן נמצא בשכבה העליונה ביותר ללחיצה */
         }
 
         .search-container {
@@ -245,7 +247,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                                 ${filteredVideos.map(v => `
                                     <div class="video-card-modern group">
-                                        <div class="relative mb-5 shadow-sm border border-white rounded-2xl overflow-hidden">
+                                        <div class="relative mb-5 shadow-sm rounded-2xl overflow-hidden">
                                             <div class="drive-video-container">
                                                 <iframe 
                                                     src="https://drive.google.com/file/d/${v.driveId}/preview" 
