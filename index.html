@@ -39,16 +39,16 @@
             margin-bottom: 1rem;
         }
 
-        /* תצוגה נכונה של ירידות שורה בתיאורים */
+        /* תצוגה נכונה של ירידות שורה \n בתיאורים */
         .category-description {
             white-space: pre-line;
         }
 
-        /* מיכל רספונסיבי מושלם לנגן של גוגל דרייב בטלפונים ובמחשב */
+        /* מיכל רספונסיבי שמונע שוליים מעוותים ושומר על יחס 16:9 */
         .drive-video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* יחס 16:9 קבוע למניעת שוליים שחורים */
+            padding-bottom: 56.25%; 
             height: 0;
             overflow: hidden;
             border-radius: 12px;
@@ -143,21 +143,6 @@
 
     <script>
         const DATA = [
-             // קטגוריה ראשונה
-          {
-              category:  "הסתגלות",
-              description: "ביטחון עצמי במים עמוקים ושליטה בנשימה.",
-              videos: [
-                  {
-                      // סרטון ראשון
-                      title: "דוגמה",
-                      description: "מלל לדוגמה",
-                      driveId: "PUT_FILE_ID_HERE_2"
-
-                  }
-              ]
-          },
-            // קטגוריה שנייה
             {
                 category: "טכניקת חתירה",
                 description: "לימוד סגנון החתירה, תנאים מקדימים:\n• מנח צידי בתנאים מקלים ביבשה ובמים, שוכבים על הרצפה, נשענים על הקיר\n• מנח צידי במים בסטטי ראש הצידה על כתף ראש למטה לחי צמודה לזרוע של היד המכוונת\n• נשימות ברוטציה קיר - סטטי - הוצאת בועות מהאף בהתחלה סיבוב יתר של הראש על מנת לאפשר נשימה.\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
@@ -264,8 +249,10 @@
                                             <div class="drive-video-container">
                                                 <iframe 
                                                     src="https://drive.google.com/file/d/${v.driveId}/preview" 
-                                                    allow="autoplay" 
-                                                    allowfullscreen>
+                                                    allow="autoplay; fullscreen; picture-in-picture" 
+                                                    allowfullscreen="true"
+                                                    webkitallowfullscreen="true"
+                                                    mozallowfullscreen="true">
                                                 </iframe>
                                             </div>
                                         </div>
