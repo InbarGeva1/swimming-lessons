@@ -275,4 +275,260 @@
         window.onload = () => renderGallery();
     </script>
 </body>
+</html>            background: #1d4ed8;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+        }
+
+        /* מאפשר תצוגה נכונה של ירידות שורה \n בטקסטים */
+        .category-description {
+            white-space: pre-line;
+        }
+
+        /* תיקון ארכיטקטורת הנגן: מונע בליעת לחיצות ומאפשר מגע ישיר בכפתורים */
+        .drive-video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* יחס זהב 16:9 מושלם למניעת שוליים */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .drive-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            z-index: 10; /* מבטיח שהנגן נמצא בשכבה העליונה ביותר ללחיצה */
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border-radius: 99px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="nav-glass sticky top-0 z-50 px-8 py-5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="text-2xl font-black tracking-tighter text-blue-900">ענת פרקש</span>
+        </div>
+    </nav>
+
+    <header class="pt-24 pb-8 px-6 text-center">
+        <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-tight mb-8">
+            סרטוני הדרכת <br>
+            <span class="text-blue-700">לימוד שחייה</span>
+        </h1>
+
+        <div class="search-container">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </span>
+            <input type="text" id="search-input" class="search-input" placeholder="חפשו סרטון, קטגוריה או נושא..." oninput="filterGallery()">
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-8 pb-32">
+        <div id="video-gallery" class="space-y-24">
+            </div>
+        <div id="no-results" class="hidden text-center py-20">
+            <p class="text-2xl text-slate-400 font-medium">לא נמצאו סרטונים התואמים לחיפוש שלך.</p>
+        </div>
+    </main>
+
+    <footer class="bg-white/50 border-t border-slate-200 py-16 px-8">
+        <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+            <div class="w-10 h-1 bg-blue-700 mb-6 rounded-full"></div>
+            <h4 class="text-xl font-bold text-blue-900 mb-2">ענת פרקש</h4>
+            <p class="text-slate-400 text-sm font-medium">כל הזכויות שמורות © ענת פרקש</p>
+        </div>
+    </footer>
+
+    <script>
+        const DATA = [
+            // קטגוריה ראשונה
+          {
+              category:  "הסתגלות",
+              description: "ביטחון עצמי במים עמוקים ושליטה בנשימה.",
+              videos: [
+                  {
+                      // סרטון ראשון
+                      title: "דוגמה",
+                      description: "מלל לדוגמה",
+                      driveId: "PUT_FILE_ID_HERE_2"
+
+                  }
+              ]
+          },
+            // קטגוריה שנייה
+            {
+                category: "טכניקת חתירה",
+                description: "לימוד סגנון החתירה, תנאים מקדימים:\n• מנח צידי בתנאים מקלים ביבשה ובמים, שוכבים על הרצפה, נשענים על הקיר\n• מנח צידי במים בסטטי ראש הצידה על כתף ראש למטה לחי צמודה לזרוע של היד המכוונת\n• נשימות ברוטציה קיר - סטטי - הוצאת בועות מהאף בהתחלה סיבוב יתר של הראש על מנת לאפשר נשימה.\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
+                videos: [
+                    {
+                        title: "נשימה ברוטציה - סטאטי",
+                        description: "שלב לאחר מנח צידי במים סטאטי:\n• נשימה ברוטציה על הקיר (מצב סטאטי), הוצאת בועות מהאף בהתחלה, סיבוב יתר של הראש על מנת לאפשר נשימה. :\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
+                        driveId: "1-iHbUNYfvMEdpwRYX_882bEG2WQvn_SR"
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "1RSCpHwjDYE2l__Y0P9O0rCinpLJ8xa8r" 
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים (אחיזה נוספת)",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "1xrh7HIK6OPmONZn7Y9gziNXSOwBnHHee" 
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים (אחיזת גיטרה)",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "1XiYJ54-QCKMS8RSkEHfQ16X-mZ6eP2FL" 
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים (אחיזת גיטרה, זווית נוספת)",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "19SbWrkrSEl3wOURdyKJGS-oQLJ6CvYC6" 
+                    },
+                    {
+                        title: "(1) מנח צידי בתנועה דינמי",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1JFQ4S4dfHmd2VZLuG_pXCkYBQ86DTugn" 
+                    },
+                    {
+                        title: "(2) מנח צידי בתנועה דינמי",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1J9hZufCNqT2GWHCoyCc4vb74QOfuX-V9"
+                    },
+                    {
+                        title: "(3) מנח צידי בתנועה דינמי - דוגמה נוספת",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1Suaa8saLOPlVQyA94bng-Xu_Ihz2zEBu"
+                    },
+                    {
+                        title: "מנח צידי בתנועה - ללא נשימה (1)",
+                        description: "מנח צידי דינמי ללא נשימה - בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים",
+                        driveId: "1faoEXHSSzwNMlRuNREV1vLQ7NbbhUAzq"
+                    },
+                    {
+                        title: "מנח צידי בתנועה - ראש סטאטי, פה לא נכנס למים (2)",
+                        description: "מנח צידי דינמי (ראש סטאטי, ללא הכנסת הפה למים) - בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים :\n• להעביר לקראת סוף הסרטון",
+                        driveId: "1SJhhGllBdpUzZXK0MORC94G4E0Y4Y44a"
+                    },
+                    {
+                        title: "מנח צידי בתנועה - עם נשימה צידית (3)",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים",
+                        driveId: "1GByfr4vVK3yrubZt0bnLwNS_iOUx0MZ1"
+                    },
+                    {
+                        title: "(אתגר זוגי) מנח צידי בתנועה - עם נשימה צידית",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה. תרגיל בזוג כאשר שני בני הזוג צריכים לנשום בתזמון",
+                        driveId: "1Gp1sCo3QweKRrG5IYQjHwjqgHwXaMtJ7"
+                    }
+                ]
+            }
+        ];
+
+        function filterGallery() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            renderGallery(query);
+        }
+
+        function renderGallery(filterTerm = "") {
+            const gallery = document.getElementById('video-gallery');
+            const noResults = document.getElementById('no-results');
+            gallery.innerHTML = '';
+
+            let hasResults = false;
+
+            DATA.forEach(section => {
+                const categoryMatches = section.category.toLowerCase().includes(filterTerm) ||
+                                       section.description.toLowerCase().includes(filterTerm);
+
+                const filteredVideos = section.videos.filter(v => {
+                    return categoryMatches ||
+                           v.title.toLowerCase().includes(filterTerm) ||
+                           v.description.toLowerCase().includes(filterTerm);
+                });
+
+                if (filteredVideos.length > 0) {
+                    hasResults = true;
+                    const sectionEl = document.createElement('section');
+                    sectionEl.innerHTML = `
+                        <div>
+                            <div class="category-accent"></div>
+                            <h2 class="text-3xl font-black text-slate-900 mb-2">${section.category}</h2>
+                            <p class="text-slate-500 font-medium text-lg max-w-2xl category-description">${section.description}</p>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+                                ${filteredVideos.map(v => `
+                                    <div class="video-card-modern group">
+                                        <div class="relative mb-5 shadow-sm rounded-2xl overflow-hidden">
+                                            <div class="drive-video-container">
+                                                <iframe 
+                                                    src="https://drive.google.com/file/d/${v.driveId}/preview" 
+                                                    allow="autoplay; fullscreen; picture-in-picture" 
+                                                    allowfullscreen="true"
+                                                    webkitallowfullscreen="true"
+                                                    mozallowfullscreen="true">
+                                                </iframe>
+                                            </div>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors">${v.title}</h3>
+                                        <p class="text-slate-500 text-sm leading-relaxed category-description">${v.description}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                    gallery.appendChild(sectionEl);
+                }
+            });
+
+            noResults.classList.toggle('hidden', hasResults);
+        }
+
+        window.onload = () => renderGallery();
+    </script>
+</body>
 </html>
