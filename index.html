@@ -330,7 +330,12 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                                 ${filteredVideos.map(v => `
-                                    <div class="video-card-modern group" onclick="openModal( '${v.driveId}', `${v.title}`, `${v.description}` )">
+                                    <div class="video-card-modern group" 
+                                        onclick='openModal(
+                                        "${v.driveId}",
+                                        "${v.title.replace(/"/g,"&quot;")}",
+                                        "${v.description.replace(/"/g,"&quot;")}"
+                                        )'>
                                         <div class="relative aspect-[9/16] max-h-[320px] mx-auto w-full bg-slate-900 rounded-2xl overflow-hidden mb-4 shadow-sm border border-slate-200 flex items-center justify-center">
                                             <div class="absolute inset-0 bg-gradient-to-tr from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4 text-center">
                                                 <div class="play-overlay w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md mb-2">
