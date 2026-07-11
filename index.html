@@ -125,6 +125,34 @@
         </div>
     </main>
 
+    <div id="video-modal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden relative">
+
+        <button onclick="closeModal()"
+            class="absolute top-3 left-3 bg-black/60 text-white rounded-full w-10 h-10 text-xl z-10">
+            ✕
+        </button>
+
+        <div class="relative w-full" style="padding-top:177.77%;">
+            <iframe
+                id="video-frame"
+                class="absolute inset-0 w-full h-full"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                frameborder="0">
+            </iframe>
+        </div>
+
+        <div class="p-5">
+            <h3 id="video-title" class="font-bold text-xl mb-2"></h3>
+            <p id="video-description" class="text-slate-500 whitespace-pre-line"></p>
+        </div>
+
+    </div>
+
+</div>
+    
     <footer class="bg-white/50 border-t border-slate-200 py-16 px-8">
         <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
             <div class="w-10 h-1 bg-blue-700 mb-6 rounded-full"></div>
@@ -302,7 +330,7 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
                                 ${filteredVideos.map(v => `
-                                    <div class="video-card-modern group" onclick="watchVideo('${v.driveId}')">
+                                    <div class="video-card-modern group" onclick="openModal( '${v.driveId}', `${v.title}`, `${v.description}` )">
                                         <div class="relative aspect-[9/16] max-h-[320px] mx-auto w-full bg-slate-900 rounded-2xl overflow-hidden mb-4 shadow-sm border border-slate-200 flex items-center justify-center">
                                             <div class="absolute inset-0 bg-gradient-to-tr from-slate-900 to-slate-800 flex flex-col items-center justify-center p-4 text-center">
                                                 <div class="play-overlay w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md mb-2">
@@ -328,10 +356,33 @@
         }
 
         // פתיחה ישירה מותאמת לרזולוציה אנכית מלאה במובייל (ללא שוליים מיותרים)
-        function watchVideo(driveId) {
+        /* function watchVideo(driveId) {
             const videoUrl = `https://drive.google.com/file/d/${driveId}/view?usp=drivesdk`;
             window.location.href = videoUrl;
         }
+        */
+
+        function openModal(driveId,title,description){
+
+    document.getElementById("video-title").innerText = title;
+    document.getElementById("video-description").innerText = description;
+
+    document.getElementById("video-frame").src =
+        `https://drive.google.com/file/d/${driveId}/preview`;
+
+    document.getElementById("video-modal").classList.remove("hidden");
+
+    document.body.style.overflow="hidden";
+}
+
+function closeModal(){
+
+    document.getElementById("video-frame").src="";
+
+    document.getElementById("video-modal").classList.add("hidden");
+
+    document.body.style.overflow="";
+}
 
         window.onload = () => renderGallery();
     </script>
