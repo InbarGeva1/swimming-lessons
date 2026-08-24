@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ענת פרקש | סרטוני הדרכת לימוד שחייה</title>
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght=300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f4f7fa 100%);
+            color: #0f172a;
+            scroll-behavior: smooth;
+            min-height: 100vh;
+        }
+
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .video-card-modern {
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .video-card-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(var(--accent-rgb, 29,78,216), 0.15), 0 10px 10px -5px rgba(var(--accent-rgb, 29,78,216), 0.06);
+        }
+
+        .category-accent {
+            width: 48px;
+            height: 4px;
+            background: var(--accent, #1d4ed8);
+            border-radius: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .category-description {
+            white-space: pre-line;
+        }
+
+        .play-overlay {
+            background: rgba(var(--accent-rgb, 29,78,216), 0.85);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+
+        .video-card-modern:hover .play-overlay {
+            background: rgba(var(--accent-rgb, 29,78,216), 0.95);
+            transform: scale(1.05);
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            border-radius: 99px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* --- תפריט ניווט לקטגוריות --- */
+        .category-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.3rem;
+            border-radius: 99px;
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            color: #334155;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .nav-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .nav-pill:hover {
+            border-color: var(--accent-text, #1d4ed8);
+            color: var(--accent-text, #1d4ed8);
+            background: rgba(var(--accent-rgb, 29,78,216), 0.1);
+            box-shadow: 0 4px 6px -1px rgba(var(--accent-rgb, 29,78,216), 0.12);
+        }
+
+        .nav-chevron {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.25s ease;
+        }
+
+        .nav-item:hover .nav-chevron {
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 50%;
+            transform: translateX(50%) translateY(8px);
+            min-width: 240px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 40;
+        }
+
+        .nav-item:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(50%) translateY(4px);
+        }
+
+        .nav-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1rem;
+            border-radius: 0.6rem;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .nav-dropdown-item:hover {
+            background: rgba(var(--accent-rgb, 29,78,216), 0.1);
+            color: var(--accent-text, #1d4ed8);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1d4ed8; }
+
+        /* --- מסך טעינה: CSS טהור, לא תלוי בטעינת Tailwind מה-CDN --- */
+        #page-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: linear-gradient(135deg, #ffffff 0%, #f4f7fa 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        #page-loader.loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #dbeafe;
+            border-top-color: #1d4ed8;
+            border-radius: 50%;
+            animation: loader-spin 0.8s linear infinite;
+        }
+        .loader-text {
+            font-family: 'Heebo', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #64748b;
+        }
+        @keyframes loader-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- כפתור חזרה למעלה --- */
+        #back-to-top {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: #1d4ed8;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px -5px rgba(29, 78, 216, 0.4);
+            cursor: pointer;
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: all 0.3s ease;
+        }
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        #back-to-top:hover {
+            background: #1e40af;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">טוען סרטונים...</div>
+    </div>
+
+    <button id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="חזרה למעלה">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <nav class="nav-glass sticky top-0 z-50 px-8 py-5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <span class="text-2xl font-black tracking-tighter text-blue-900">ענת פרקש</span>
+        </div>
+    </nav>
+
+    <header class="pt-24 pb-8 px-6 text-center">
+        <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-tight mb-8">
+            סרטוני הדרכת <br>
+            <span class="text-blue-700">לימוד שחייה</span>
+        </h1>
+
+        <div class="search-container">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </span>
+            <input type="text" id="search-input" class="search-input" placeholder="חפשו סרטון, קטגוריה או נושא..." oninput="filterGallery()">
+        </div>
+
+        <nav class="category-nav" id="category-nav">
+            <!-- Content will be injected by JavaScript -->
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-8 pb-32">
+        <div id="video-gallery" class="space-y-24">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+        <div id="no-results" class="hidden text-center py-20">
+            <p class="text-2xl text-slate-400 font-medium">לא נמצאו סרטונים התואמים לחיפוש שלך.</p>
+        </div>
+    </main>
+
+    <div id="video-modal" class="fixed inset-0 z-50 hidden bg-black/80 flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto relative">
+
+        <button onclick="closeModal()"
+            class="fixed top-3 left-3 bg-black/60 text-white rounded-full w-10 h-10 text-xl z-20 md:absolute">
+            ✕
+        </button>
+
+        <div class="relative w-full max-h-[70vh]" style="aspect-ratio: 9 / 16; max-width: min(100%, calc(70vh * 9 / 16)); margin: 0 auto;">
+            <iframe
+                id="video-frame"
+                class="absolute inset-0 w-full h-full"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+                frameborder="0">
+            </iframe>
+        </div>
+
+        <div class="p-5">
+            <h3 id="video-title" class="font-bold text-xl mb-2"></h3>
+            <p id="video-description" class="text-slate-500 whitespace-pre-line"></p>
+        </div>
+
+    </div>
+
+</div>
+    
+    <footer class="bg-white/50 border-t border-slate-200 py-16 px-8">
+        <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+            <div class="w-10 h-1 bg-blue-700 mb-6 rounded-full"></div>
+            <h4 class="text-xl font-bold text-blue-900 mb-2">ענת פרקש</h4>
+            <p class="text-slate-400 text-sm font-medium">כל הזכויות שמורות © ענת פרקש</p>
+        </div>
+    </footer>
+
+    <script>
+        const DATA = [
+            // קטגוריה ראשונה         
+            {
+                category:  "הסתגלות",
+                isGroup: true,
+                accent: "#F2A882",
+                subcategories: [
+                    {
+                        category: "שלב ההסתגלות",
+                        accent: "#F0C282",
+                        description: "ביטחון עצמי במים עמוקים ושליטה בנשימה.",
+                        videos: [
+                    {
+                        // סרטון ראשון
+                        title: "הנחש בא",
+                        description: "תרגול של נשימה עצורה ע״י משחק, בדרך יותר קלה לביצוע ע״י התלמיד \n להגיד לפני שהמשחק מתחיל",
+                        driveId: "1l6CaCaLvBh64gyFBhp5VsJqOojpA_XOq"
+                    },
+                    {
+                        title: "תרגול נוסף של הנחש בא",
+                        description: "תרגול של נשימה עצורה ע״י משחק, בדרך יותר קלה לביצוע ע״י התלמיד ",
+                        driveId: "1RC5zVtPEwrrw0NS1bg2A5RKucj5kLdAd"
+                    },
+                    {
+                        title: "גלישה ע״י גרירה עם ידיים ישרות",
+                        description: "תרגול גלישה על המים ע''י גרירה של התלמיד ",
+                        driveId: "1MUkRHS_80ot654u4B-EA0gi33_DDodZU"
+                    },
+                    {
+                        title: "גלישה עצמאית",
+                        description: "המשך תרגול הגלישה אך הפעם בביצוע עצמאי בעזרת דחיפה מהרצפה \n אחרי הדחיפה להתיישר ולקום כמו שצריך, חוזר חלילה",
+                        driveId: "1J4b5JcdVGii4YTa0UXKb_Rd30pZQKE96"
+                    },
+                    {
+                        title: "מנח גוף נכון בעת החץ",
+                        description: "החזקה בקיר, לקיחת אוויר, ראש מסתכל לרצפה, רגליים מתיישרות, כשחוזרים מקפלים רגליים לבטן ומוציאים ראש",
+                        driveId: "1QcGcub8VheVB8lj2OCJAGo_vp2MwbjOa"
+                    },
+                    {
+                        title: "תרגול עלייה בעזרת נודל",
+                        description: "הנודל משמש כאן כאמצעי עזר, משתמשים בו ודוחפים אותו כלפי מטה כשעולים לקחת אוויר, בשילוב עם הצמדת ברכיים לבטן",
+                        driveId: "1khZa-fAKhgXuKowjCOXCZOeOKtOnQCAd"
+                    },
+                    {
+                        title: "סקייטבורד נודל",
+                        description: "גלישה על הנודל",
+                        driveId: "1ZFLcyt37x44buUAslBFE2_qoFVrIWYje"
+                    },
+                    {
+                        title: "כוכב על הבטן עם נודל ומעבר לגב",
+                        description: "הסבר של ענת לענבר שלבין לביצוע התרגיל מעבר משכיבה על הבטן לגב בעזרת נודל ֿֿֿ\n השלבים: \n משכיבה את עצמי על הבטן בלקיחת אוויר , ידיים ישרות מחזיקות את הנודל, שמה את הראש כלפי מטה מבט לרצפה, מרימה רגליים , עד שמרגישים שהרגליים שוקעות , מושכים את הנודל לכיוון בית החזה, מוציאים בועות מהאף ונשכבים על הגב",
+                        driveId: "1PXSTDagABjWXPkpyQ96XbD2FN6Xcm2b1"
+                    },
+                    {
+                        title: "שלב הבא עם נודל מעבר משכיבה על הגב לבטן ושוב גב ובטן",
+                        description: "תרגיל מאתגר \n העלאת דרגת קושי באמצעות הנודל מעבר מכוכב על הגב לכוכב על הבטן, ושוב על הגב ובטן.",
+                        driveId: "1yrfqesrUoQyytw0THKeAOQUWrlUIrThO"
+                    },
+                    {
+                        title: "מנח צידי עם נודל , מעבר מצד לצד",
+                        description: "אחיזה של הנודל , יד אחת בקצה הנודל יד שניה אוחזרת רחוק יותר, שוכבים על הבטן , על הצד ראש מונח על הנודל , ובכיפוף רגליים לבטן עוברים מצד לצד , דגש על גוף ישר ",
+                        driveId: "1mPqj_u5PJNabe80iMAFTf7Mxw-GBQoc8"
+                    },
+                    {
+                        title: "תחושת מים עם נודל",
+                        description: "נודל בין הרגליים , ובעזרת הידיים מתקדמים קדימה , הגוף עולה ויורד כמו רכיבה על סוס",
+                        driveId: "1WQtA2KAzjic3Vxo994MIIv4lCzgXetUR"
+                    },
+                    {
+                        title: "שלב הכנה לחץ - חץ דחיפה מהקיר",
+                        description: "ממיינים את הקבוצה למספרי 1 ו2 . מבקשים רק ממספרי 1 תחילה גב לקיר , לכופף ברכיים, כתפיים במיים , רגל 1 על הקיר, ידיים ישרות מקבילות, לקחת אוויר מצח במים, ולדחוף מהקיר עד לקו האדום, צריך להחזיק את האוויר, וכשנגמרת התנופה, מה עושים? מכופפים ברכיים לכיוון בית החזה ונעמדים. בסיום התרגיל אומרים למספרי 1 , להיות בצידי המסלול, כדי שמספרי 2 יתרגלו גם",
+                        driveId: "1dyprYyN4TgxDCJf1d2BthyCG6m8GlcHf"
+                    },
+                    {
+                        title: "חץ של מתחילים - חתירה הסבר וביצוע התרגיל",
+                        description: "שלבים של ביצוע חץ מתחילים: ידייים בשמיים אגודל מחזיק אגודל של יד שנייה , הידיים בצידי האוזניים.   כתפיים במים , ידיים על קו המים, רגל 1 בקיר , לקיחת אוויר  מצח במים ולדחוף מהקיר ֿֿ\n רגל 1 בקיר יוצר ביטחון כי יש רגל 1 שנוגעת בקרקע החיסרון אין איזון ביציאה מהקיר",
+                        driveId: "1Iy98NZGu7Bka5GuTo_ZCBFVMp1X-y2eZ"
+                    }
+                            
+                ]
+                    },
+                    {
+                        category: "משחקים להסתגלות",
+                        accent: "#A6CE80",
+                        description: "משחקים ואתגרים ללימוד תחושת מים ולשלב ההסתגלות",
+                        videos: [
+                    {
+                        // סרטון ראשון
+                        title: "משחק חברה הגעה לקיר כקבוצה",
+                        description: "משחק תחרותי בין קבוצות , כל קבוצה במסלול מטרה באחיזת ידיים אחד לשני להגיע לקיר כמה שיותר מהר כשרגליים נוגעות בקרקע \n כל קבוצה במסלול נותנת לעצמה שם, כאשר הקבוצה עומדת על הקו האדום עם הפנים לכיוון הקיר, על חברי הקבוצה לאחוז ידיים אחד לשני , ולהגיע בריצה לקיר כמה שיותר מהר ",
+                        driveId: "1wO30lYv45oBalesPprU7Ym-WPAVTJk3F"
+                    },
+                    {
+                        title: "המשך משחק תחרותי בין קבוצות הגעה לקיר ניסיון 2",
+                        description: "המשך המשחק התחרותי בין הקבוצות",
+                        driveId: "1mKGxD_dLCzPnUQkafVCbnbGwrVe4Itun"
+                    },
+                    {
+                        title: "קפיצות דולפין",
+                        description: "עמידה על הקו האדום , קופצים בצלילה ידיים ישרות מעל הראש ורגלים דולפין קמים ושוב קופצים עד הגעה לקיר",
+                        driveId: "1mOYDO7sLJ8MGoNy5fFxkjJkgjhx6xXWi"
+                    },
+                    {
+                        title: "קצפת במים עם נודל משחק קבוצתי תחרותי",
+                        description: "כל קבוצה במסלול מקבלת נודל ואוחזים בו מהקו האדום, המטרה להתקדם לקיר על ידי בעיטה במים, ביצוע קצפת משותפת. ֿ\n משחק קבוצה , בעיטות קצפת משותפת לקיר בעזרת נודל",
+                        driveId: "16kv6RzgiWB2gzMASF7fNsIkmtZQkUXPl"
+                    },
+                    {
+                        title: "ביצוע קצפת במים משחק קבוצתי בהמשך לקובץ הקודם",
+                        description: "המשך ביצוע קצפת במים משותפת ע״י נודל", 
+                        driveId: "1WJTzpInfH_TfSmgQvM_6EjT_dA6lSx8N"
+                    }
+                    ]
+                    },
+                ]
+            },
+            // קטגורית-על: סגנון חתירה, עם תתי-קטגוריות
+            {
+                category: "סגנון חתירה",
+                isGroup: true,
+                accent: "#93B8E8",
+                subcategories: [
+                    {
+                        category: "מנח צידי ונשימה",
+                        accent: "#84D3DE",
+                        description: "לימוד סגנון החתירה, תנאים מקדימים:\n• מנח צידי בתנאים מקלים ביבשה ובמים, שוכבים על הרצפה, נשענים על הקיר\n• מנח צידי במים בסטטי ראש הצידה על כתף ראש למטה לחי צמודה לזרוע של היד המכוונת\n• נשימות ברוטציה קיר - סטטי - הוצאת בועות מהאף בהתחלה סיבוב יתר של הראש על מנת לאפשר נשימה.\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
+                        videos: [
+                    {
+                        title: "נשימה ברוטציה - סטאטי",
+                        description: "שלב לאחר מנח צידי במים סטאטי:\n• נשימה ברוטציה על הקיר (מצב סטאטי), הוצאת בועות מהאף בהתחלה, סיבוב יתר של הראש על מנת לאפשר נשימה. :\n• הקפדה על רוטציה אופקית של הראש (לא להרים)",
+                        driveId: "1-iHbUNYfvMEdpwRYX_882bEG2WQvn_SR"
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "1RSCpHwjDYE2l__Y0P9O0rCinpLJ8xa8r" 
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים (אחיזה נוספת)",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "1xrh7HIK6OPmONZn7Y9gziNXSOwBnHHee" 
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים (אחיזת גיטרה)",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "1XiYJ54-QCKMS8RSkEHfQ16X-mZ6eP2FL" 
+                    },
+                    {
+                        title: "מנח צידי בתנועה בתנאים מקלים (אחיזת גיטרה, זווית נוספת)",
+                        description: "בשני מנחי הראש ובצרוף הנשימה הצידית- אחיזת המדריך",
+                        driveId: "19SbWrkrSEl3wOURdyKJGS-oQLJ6CvYC6" 
+                    },
+                    {
+                        title: "(1) מנח צידי בתנועה דינמי",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1JFQ4S4dfHmd2VZLuG_pXCkYBQ86DTugn" 
+                    },
+                    {
+                        title: "(2) מנח צידי בתנועה דינמי",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1J9hZufCNqT2GWHCoyCc4vb74QOfuX-V9"
+                    },
+                    {
+                        title: "(3) מנח צידי בתנועה דינמי - דוגמה נוספת",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים, אופציה לאחיזת מדריך",
+                        driveId: "1Suaa8saLOPlVQyA94bng-Xu_Ihz2zEBu"
+                    },
+                    {
+                        title: "מנח צידי בתנועה - ללא נשימה (1)",
+                        description: "מנח צידי דינמי ללא נשימה - בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים",
+                        driveId: "1faoEXHSSzwNMlRuNREV1vLQ7NbbhUAzq"
+                    },
+                    {
+                        title: "מנח צידי בתנועה - ראש סטאטי, פה לא נכנס למים (2)",
+                        description: "מנח צידי דינמי (ראש סטאטי, ללא הכנסת הפה למים) - בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים :\n• להעביר לקראת סוף הסרטון",
+                        driveId: "1SJhhGllBdpUzZXK0MORC94G4E0Y4Y44a"
+                    },
+                    {
+                        title: "מנח צידי בתנועה - עם נשימה צידית (3)",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה בתנאים מקלים-סנפירים",
+                        driveId: "1GByfr4vVK3yrubZt0bnLwNS_iOUx0MZ1"
+                    },
+                    {
+                        title: "(אתגר זוגי) מנח צידי בתנועה - עם נשימה צידית",
+                        description: "מנח צידי דינמי ונשימה צידית בתוספת עבודת רגליים בחתירה. תרגיל בזוג כאשר שני בני הזוג צריכים לנשום בתזמון",
+                        driveId: "1Gp1sCo3QweKRrG5IYQjHwjqgHwXaMtJ7"
+                    }
+                        ]
+                    },
+
+                    {
+                        category: "רגליים חתירה",
+                        accent: "#82D9BE",
+                        description: "לימוד רגליים חתירה - קצפת",
+                        videos: [
+                            {
+                                title: "תרגיל הקבצן",
+                                description: "לעשות בשתי הידיים",
+                                driveId: "1upwwq2uYHiZSwweIyfafFXWpTheyn3Lq"
+                            },
+                             {
+                                title: "הדגמת תרגיל הקבצן",
+                                description: "דימוי שממחיש איך תנועת הרגליים בחתירה צריכה להיות - רפויה ועקבית. יד אחת בלבד",
+                                driveId: "1TugCZfHF-gL6wvnQ5ZhZb_tFE0k9STEe"
+                            },
+                            {
+                                title: "רגליים קצפת עד לקו האדום",
+                                description: "כתפיים במים - אוויר - מצח במים - דחיפה וגלישה עם מסילות + רגליים קצפת",
+                                driveId: "1--9mxhUeaBgwVUT4XyXlcA7lU_hi7LDT"
+                            },
+                            {
+                                title: "קצפת ברגליים עם מסילות",
+                                description: "יציאה מקו אדום או יותר נגיד 12 מ' בערך, ידיים במסילות ורגליים מבצעות קצפת משוחררת ורגועה.",
+                                driveId: "1YcIqPU1b3rnCQI4mO7NkBoS1yzeSFEqE"
+                            }
+                        ]
+                    },
+                    
+                    {
+                        category: "הכנה ללמוד ידיים",
+                        accent: "#6FCBB8",
+                        description: "לימוד מסילות, סיבוב סביב ציר האורך, סיבוב הראש, מנח צידי ",
+                        videos: [
+                            {
+                                title: "הדגמה ביבשה- סיבוב הגוף עם דגש לראש נשאר במקום",
+                                description: "הדגמה ביבשה, להחזיק את ראש התלמיד- ולהראות לו את הסיבוב על הציר. ללא תזוזה של הראש",
+                                driveId: "1AV35iAWuvnK_Uvb2rw0EpCDgNxjNjJ9H"
+                            },
+                            {
+                                title: "הדגמת תרגול ביבשה- סיבוב סביב ציר האורך",
+                                description: "הדגמה ביבשה- יש להזיז את הידיים לצדדים, כאשר הראש נשאר במקום",
+                                driveId: "128IVVl-61a3nZAeAxgBi5dwE3ypG7wKg"
+                            },
+                            {
+                                title: "הדגמת תרגול ביבשה- סיבוב סביב ציר האורך",
+                                description: "הדגמה ביבשה- יש להזיז את הידיים לצדדים, כאשר הראש נשאר במקום",
+                                driveId: "1JgwD8X2FnAJmXAlm3W341LswVvq3NXht"
+                            },
+                            {
+                                title: "הדגמת תרגול ביבשה- סיבוב סביב ציר האורך",
+                                description: "הדגמה ביבשה- זריקת ידיים לצדדים, כאשר הראש נשאר במקום",
+                                driveId: "1H10tzVLr0NYDo2XgLJmQfRQSuuO2g8oQ"
+                            },
+                            {
+                                title: "הדגמת תרגול ביבשה- סיבוב סביב ציר האורך",
+                                description: "הדגמה ביבשה- ליווי התלמיד בזריקת הידיים לצדדים, כאשר הראש נשאר במקום",
+                                driveId: "1-E6neOltPBzfzerDgC4UUx1JDSGDGGFk"
+                            },
+                            {
+                                title: "הדגמת תרגול ביבשה- סיבוב סביב ציר האורך ורוטציה",
+                                description: "הדגמה ביבשה- ליווי התלמיד על כתפי המדריך, תרגול בזוגות- והזזה מצד לצד. מביא את האיכות של החתירה",
+                                driveId: "1OwwJxF27kSlabFkMtfHi7ebNgoGAoc_T"
+                            },
+                            {
+                                title: "תרגול מנח צידי, ראש נשען על הכתף. תרגול בשני הצדדים",
+                                description: "יד על הקיר, רגליים על הרצפה. אוזן נצמדת ליד- תרגול מנח צידי. תרגול בשני הצדדים",
+                                driveId: "1QusujJwUj3oqy_Gn1fJzzCtmiO5MchrS"
+                            },
+                            {
+                                title: "תרגול מנח צידי- בועות, אוויר. על הקיר- יד ימין",
+                                description: "תרגול מנח צידי- יד על הקיר, רגליים ברצפה- רגל אחת על השניה. בועות לכיוון בית השחי, והוצאת אוויר",
+                                driveId: "14JmaNRCEBDE8ZV9XrXBjrqNrj5HmIRBg"
+                            },
+                            {
+                                title: "תרגול מנח צידי- בועות, אוויר. על הקיר- יד שמאל",
+                                description: "תרגול מנח צידי- יד על הקיר, רגליים ברצפה- רגל אחת על השניה. בועות לכיוון בית השחי, והוצאת אוויר",
+                                driveId: "1H2RnGnh1x0YL5YvXGZWzQNtHDF6w3mZH"
+                            },
+                            {
+                                title: "תרגול מנח צידי- בועות, אוויר. על הקיר- יד שמאל",
+                                description: "תרגול מנח צידי- יד על הקיר, רגליים ברצפה- רגל אחת על השניה. בועות לכיוון בית השחי, והוצאת אוויר",
+                                driveId: "1hT1U3viOXhR-J-uV6DIVgPA9O7UnwwPQ"
+                            },
+                            {
+                                title: "מנח צידי דינאמי. יציאה מהקיר והשענות על היד",
+                                description: "תרגול מנח צידי דינאמי- עם יציאה מהקיר. יד אחת מושטת קדימה, היד השניה צמודה לגוף הראש נשען על הכתף של היד המושטת. חתירה ברגליים",
+                                driveId: "19Pki-7hsAGKDcu4PGcvhQjGuUHeXGH5a"
+                            },
+                            {
+                                title: "מנח צידי דינאמי. יציאה מהקיר וראש בתוך המים",
+                                description: "תרגול מנח צידי- חץ, רגליים על הצד , ראש למטה, כתף למעלה. ",
+                                driveId: "1GE0meM2ghsxfewe7GfRkIb7lQ3i6OXfs"
+                            },
+                            {
+                                title: "דיוק מיקום הראש לחתירה- ע״י הדגמה של המדריך לתלמיד",
+                                description: "המדריך מחזיק לתלמיד את הראש, די לדייק את מיקום ראש (שלא יהיה למעלה מידי) בחתירה",
+                                driveId: "1CncG7y7JA3egdVSO4FUst9uXTQ30ysPn"
+                            },
+                            {
+                                title: "דיוק מיקום הראש לחתירה- ע״י הדגמה של המדריך לתלמיד",
+                                description: "המדריך מחזיק לתלמיד את הראש, די לדייק את מיקום ראש (שלא יהיה למעלה מידי) בחתירה. כשהצוואר יהיה ארוך וינוח עם המצח על היד של המדריך",
+                                driveId: "1mTtA0O8v7kdj_GG4j6kv4vYTFIMhcABk"
+                            },
+                            {
+                                title: "מנח צידי דינאמי, יציאה מהקיר. חץ ביד אחת, עם נשימה מתחלפת",
+                                description: "תרגול מנח צידי דינאמי- יציאה מהקיר, יד אחת בחץ, הראש נשען על היד הזו, ומבצעים נשימה מתחלפת- אוויר, בועות, אוויר, בועות",
+                                driveId: "1SgaK2v0GesQAMsfzyuk0N4S0TbZ7Ns5U"
+                            },
+                            {
+                                title: "תחרות זוגות- נשימה באותו תזמון",
+                                description: "תחרות בין זוגות- יש לנשום באותו תזמון של בן הזוג",
+                                driveId: "1fMBFYtw5kg71HDYQW2doTak6bCB9JN7K"
+                            },
+                            {
+                                title: "תרגיל מנח צידי- מתחיל במסילות בידיים, ואז ביצוע רוטציה לצד אחד בשילוב נשימה מתחלפת",
+                                description: "מתחילים את התרגיל במסילות בידיים, רגליים חתירה, מסתובבים לצד- יד על הירך, יד קדימה.. ונשימה מתחלפת",
+                                driveId: "1WhfkvFqIUD2fO7R-qUWy-MknqwaM_496"
+                            },
+                            {
+                                title: "לימוד החלפת ידיים בלי להזיז ראש (ראש מחוץ למים)",
+                                description: "תרגול החלפת ידיים ללא הזזת ראש במים",
+                                driveId: "1e4-ndYwu6lsZuBD27ZzrhL_0zDfjeSHq"
+                            },
+                            {
+                                title: "לימוד החלפת ידיים בלי להזיז ראש (ראש בתוך המים)",
+                                description: "תרגול החלפת ידיים ללא הזזת ראש - כשהראש בתוך המים",
+                                driveId: "1CzGDKYQGGYvmmoRVd0oFJQPinvzX4nX9"
+                            },
+                            {
+                                title: "לימוד החלפת ידיים בלי להזיז ראש (ראש בתוך המים)",
+                                description: "תרגול החלפת ידיים ללא הזזת ראש - כשהראש בתוך המים",
+                                driveId: "1EOIDbGrXEOQ5_qqmKcj0RJzLJJcc0y2X"
+                            },
+                            {
+                                title: "בדיקת מסילות, תיקון יתר לשגיאה של ביצוע אלכסונים",
+                                description: "בדיקת ביצוע החלפת ידיים ושמירה על מסילות- תיקון יתר לשגיאה של ביצוע אלכסונים. נאמר לתלמיד להרחיב את הידיים קצת יותר לצדדים",
+                                driveId: "15fYlWNcujWXrsYUtGAalfw6rz2NbnW9s"
+                            },
+                            {
+                                title: "בדיקת מסילות, תיקון יתר לשגיאה של ביצוע אלכסונים",
+                                description: "בדיקת ביצוע החלפת ידיים ושמירה על מסילות- תיקון יתר לשגיאה של ביצוע אלכסונים. נאמר לתלמיד להרחיב קצת פחות את הידיים קצת יותר לצדדים",
+                                driveId: "19OcMX00m6cJ_l0KD1Ew66tXMXqwBrWu2"
+                            },
+                            {
+                                title: "תרגיל לימוד החלפת ידיים בחתירה",
+                                description: "יציאה מהקיר- ראש בתוך המים, החלפת ידיים בתוך המים. דגש לבדיקת מסילות",
+                                driveId: "1bOUyvRXS_09St08nXYxqnQWF9PrAIj1J"
+                            },
+                            {
+                                title: "תרגיל לימוד החלפת ידיים בחתירה",
+                                description: "יציאה מהקיר- ראש בתוך המים, החלפת ידיים בתוך המים. דגש לבדיקת מסילות ולראות את הכתפיים מתחלפות",
+                                driveId: "1bqgpFeyBPc5Ws9t1Mjp-tXS8gpKl2K-U"
+                            },
+                            {
+                                title: "תרגיל לימוד החלפת ידיים בחתירה",
+                                description: "יציאה מהקיר- ראש בתוך המים, החלפת ידיים בתוך המים. דגש לבדיקת מסילות ולראות את הכתפיים מתחלפות",
+                                driveId: "1htprlOiMf-Xl8ieaZ8uF7kboXsFdeeZt"
+                            },
+                            {
+                                title: "תרגיל לימוד החלפת ידיים בחתירה",
+                                description: "יציאה מהקיר- ראש בתוך המים, החלפת ידיים בתוך המים. דגש לבדיקת מסילות ולראות את הכתפיים מתחלפות",
+                                driveId: "1B45htTxdkHgc5ls5rR91AIbSzq95fDhN"
+                            },
+                            {
+                                title: "תרגיל לימוד החלפת ידיים בחתירה, עם סיבוב לגב",
+                                description: "תרגיל לימוד החלפת ידיים בחתירה, עם סיבוב לגב. 2 תנועות ידיים: בועות, אוויר. להסתובב גב",
+                                driveId: "1EQPfp0sMuXVLKksew00k4heWOVckAC-z"
+                            },
+                            {
+                                title: "תרגיל לימוד החלפת ידיים בחתירה, עם סיבוב לגב- עם סנפירים",
+                                description: "תרגיל לימוד החלפת ידיים בחתירה, עם סיבוב לגב. 2 תנועות ידיים: בועות, אוויר. להסתובב גב- עם סנפירים",
+                                driveId: "1vvfv9MqTOg9XiF_s8q9JdWB2Xt-_h_qc"
+                            },
+                            {
+                                title: "מנח צידי עם ספירים",
+                                description: "תרגיל מנח צידי, יד בחץ. יד שניה על הירך. ראש בתוך המים כל הזמן. בשילוב עם סנפירים. ",
+                                driveId: "1e7awf1ieFUN_PKFLUfQrILC98XDbkW3-"
+                            },
+                            {
+                                title: "תרגיל החלפת ידיים כל 3 תנועות- התנועות בתוך המים",
+                                description: "תרגיל החלפת ידיים - כל 3 תנועות נשימה. התנועות מתבצעות בתוך המים (ללא הוצאת היד החוצה)",
+                                driveId: "1e_gSdfLDPAvTAz07YhETbEuL4NXsWO1C"
+                            },
+                            {
+                                title: "ידיים חתירה - מוציא ארנק מהכיס",
+                                description: "תרגול סטטי בעמידה של תנועת הידיים והסינכרון בין השתיים. כולל שלבי ביניים והבהרה.",
+                                driveId: "1hIpQ_2J0Xlfc6_DCBwGYpaeuet-PjqbU"
+                            }
+                           
+
+                            
+
+
+                            /*
+                            
+                            {
+                                title: "(1)הכנה לגריפה",
+                                description: "  כף יד שחיין וביצוע החלפות ידיים סטאטי בעמידה במים",
+                                driveId: "להשלים"
+                            },
+                            {
+                                title: "הכנה לגריפה(2)",
+                                description: " דינמי החלפות ידיים ממנח דידי למנח צידי ידיים נשארות כל הזמן במים",
+                                driveId: "להשלים"
+                            },
+                            {
+                                title: "הכנה לגריפה - מצבי ראש שונים ומקצבים",
+                                description: " דינמי החלפות ידיים ממנח דידי למנח צידי ידיים נשארות כל הזמן במים",
+                                driveId: "להשלים"
+                            },
+                            {
+                                title: "הכנה לגריפה - בצירוף הסתובבות על הגב",
+                                description: " דינמי החלפות ידיים ממנח דידי למנח צידי ידיים נשארות כל הזמן במים",
+                                driveId: "להשלים"
+                            } */
+
+                            
+                        ]
+                    },
+
+                    {
+                        category: "לימוד ידיים",
+                        accent: "#7FA8D9",
+                        description: "שלב לימוד תנועת הידיים ",
+                        videos: [
+                            
+                            {
+                                title: "גריפה (Catch & Pull) - תת-מימית לגמרי: גריפה בתוך המים ללא הוצאת יד בעמידה",
+                                description: " בעמידה במים הראש נשאר קבוע ויציב במרכז, בעוד הכתפיים מסתובבות סביבו בכל משיכה. הרוטציה הזו מאפשרת ליד לבצע גריפה ארוכה ורציפה",
+                                driveId: "1SY9LbE0yhsSUfbbt1YC8eWAscZ3a3zTP"
+                            },
+                            {
+                                title: "גריפה (Catch & Pull) - תת-מימית לגמרי: גריפה בתוך המים ללא הוצאת יד בעמידה",
+                                description: " אותו עיקרון, פה התבצע תיקון ע״י ענת שהיד של הייא מאחורה לא הייתה ישירה, במובן של ללכת עד הסוף ",
+                                driveId: "1liA_66bs-5YyFOd-ggLHaccTbb6Q-N4e"
+                            },
+                            {
+                                title: "גריפה (Catch & Pull) - תת-מימית לגמרי: גריפה בתוך המים ללא הוצאת יד ",
+                                description: " גריפה תת מימית, חשוב להדגיש שבחלקים היד מתיישרת מאחורה אצל הייא ובחלקים לא, כן החשיבות שהיד תהיה לא מקופלת ואלא ישרה",
+                                driveId: "1ny9MzaytVFBog_xcvPRIRn7PGrZDXDec"
+                            },
+                            {
+                                title: "בשחיה גריפה (Catch & Pull) - תת-מימית לגמרי: גריפה בתוך המים ללא הוצאת",
+                                description: " תרגול הגריפה (Catch & Pull) תוך כדי שחייה - עם דגש על החלפת הידיים לסירוגין, כשכל פעם כל הגוף מסתובב כיחידה אחת (כתפיים, גו, ירכיים) בעקבות הגריפה, בעוד הראש נשאר קבוע במקום. המטרה היא לחדד את ההרגשה של הרוטציה ושל היד בתוך המים",
+                                driveId: "1tRaodzPImpon7lLXOvWmkbXUcMhbAChg"
+                            },
+                            {
+                                title: "גריפה תת-מימית ורוטציית גוף - מעבר לשכיבת גב",
+                                description: "תרגול המשלב גריפה תת-מימית ימין-שמאל ולאחריה מעבר לשכיבה על הגב - עם דגש על הרוטציה הרציפה של הגוף כיחידה אחת בין הצדדים, תוך שמירה על הראש קבוע במקום. ",
+                                driveId: "16wXpW6TXPbZH7wgMwkPrDESDKy0a4owT"
+                            },
+                            {
+                                title: "מנח יד קדמית והכנסת יד למים - תרגול בעמידה",
+                                description: "תרגול בעמידה במים (לא תוך כדי שחייה): יד שמאל ישרה ומושטת קדימה, יד ימין מקופלת ליד האוזן, הראש קדימה עם מבט למים. ענת מנחה להסתכל למנח של היד המושטת קדימה, ולאחר מכן להכניס את יד ימין למים. ",
+                                driveId: "1Mwee1CNzLGF3fh9_8__JHfQ3WpGc0K9J"
+                            },
+                            {
+                                title: "בעמידה גריפה (Catch & Pull) - תת-מימית לגמרי: גריפה בתוך המים ללא הוצאת יד",
+                                description: "תרגול הגריפה (Catch & Pull)-בעמידה במים הראש נשאר קבוע ויציב במרכז, בעוד הכתפיים מסתובבות סביבו בכל משיכה. הרוטציה הזו מאפשרת ליד לבצע גריפה ארוכה ורציפה ",
+                                driveId: "1PMNXdxnwuLVe7WGZTacPyM-H1J-ZzWhf"
+                            },
+                            {
+                                title: "מנח יד קדמית והכנסת יד למים - תרגול בעמידה",
+                                description: "תרגול בעמידה במים (לא תוך כדי שחייה): יד ימין ישרה ומושטת קדימה, יד שמאל מקופלת ליד האוזן, הראש קדימה עם מבט למים. ענת מנחה להסתכל למנח של היד המושטת קדימה, ולאחר מכן להכניס את יד שמאללמים. ",
+                                driveId: "1PbWOmBiAXJOvSUtgpccHFFgbG7swI8Fc"
+                            },
+                            {
+                                title: "בעמידה גריפה (Catch & Pull) - תת-מימית לגמרי: גריפה בתוך המים ללא הוצאת יד",
+                                description: " תרגול הגריפה (Catch & Pull)-בעמידה במים הראש נשאר קבוע ויציב במרכז, בעוד הכתפיים מסתובבות סביבו בכל משיכה. הרוטציה הזו מאפשרת ליד לבצע גריפה ארוכה ורציפה \n בסרטון הזה אפשר לראות את ההבדל בין השחיינים שחלק כן מזיזים את הראש והכתפיים לא בהכרח נוטות לרוטציה",
+                                driveId: "1-VtMluvzFggdWYpO15fp6ZJT5c2hb9Xl"
+                            },
+                            {
+                                title: "בעמיד הגריפה מלאה עם הוצאת מרפק ורוטציה ",
+                                description: " תרגול שממשיך את הגריפה עד להוצאת היד מהמים - כאשר היד היוצאת מגיעה למנח מקביל ליד השנייה, תוך יישום הרוטציה שתורגלה בתרגיל הקודם, עם דגש על הוצאת המרפק ראשון",
+                                driveId: "1tzQSRiHNUxyNJqBCR_oOZWODLuufA0_V"
+                            },
+                            {
+                                title: "גריפה חד-ידנית (יד ימין) מיציאת חץ - דגש על ראש למטה",
+                                description: " יציאה מהקיר במנח חץ , ולאחריה שחייה תוך גריפה של יד ימין בלבד - עם דגש על שמירת הראש למטה ורוטציה ויד שמאל נשארת מקדימה \n בתרגיל זה יש חשיבות גם למיקום כניסת היד למים - במישור הנכון, בקו הכתף.",
+                                driveId: "1lnvLblAWWozE7u28jeVSoz-JA_KJXYnd"
+                            },
+                            {
+                                title: "גריפה חד-ידנית (יד ישמאל)  דגש על ראש למטה",
+                                description: "  שחייה תוך גריפה של יד שמאל בלבד - עם דגש על שמירת הראש למטה ורוטציה ויד ימין נשארת מקדימה  \n בתרגיל זה יש חשיבות גם למיקום כניסת היד למים - במישור הנכון, בקו הכתף.",
+                                driveId: "1FhJvaxYzk_YJouaxgsaIVejWjwDAM5Kf"
+                            },
+                            {
+                                title: "גריפה חד-ידנית (יד ישמאל) דגש על ראש למטה",
+                                description: " שחייה תוך גריפה של יד שמאל בלבד - עם דגש על שמירת הראש למטה ורוטציה ויד ימין נשארת מקדימה",
+                                driveId: "1hdAegyE_E9GeWcRwmTYDclmnzxPo_Upd"
+                            },
+                            {
+                                title: "גריפה חד ידנית",
+                                description: " חייה תוך גריפה של יד ימין בלבד - עם דגש על שמירת הראש למטה ורוטציה ויד שמאל נשארת מקדימה \n בתרגיל זה יש חשיבות גם למיקום כניסת/תחילת הגריפה של היד ביחס לרוחב הכתף. טעויות נפוצות: היד נכנסת פנימה מדי (חוצה את קו האמצע) או יוצאת החוצה מדי מקו הכתף. לעיתים משתמשים בתיקון-יתר כדי לתקן את הטעות.",
+                                driveId: "149RhtnYFh_4xOwMZfPDYTBnMwdZ5EGbH"
+                            }
+                                                        
+                        ]
+                    },
+                    {
+                        category: "שילוב ידיים ונשימה",
+                        accent: "#A8A8E8",
+                        description: "שילוב תנועות הידיים בחתירה יחד עם נשימה ",
+                        videos: [
+                            {
+                                title: "תרגול מסילות - שתי תנועות בלי נשימה",
+                                description: "דחיפת הרצפה וגלישה במסילות. יד ימין - יד שמאל ולקום ללא נשימה.",
+                                driveId: "https://drive.google.com/file/d/1f8RGXVwj6_hTkvWvJ_fAjQ_lcmXhoZ8l/view?usp=drive_link"
+                            },
+                            {
+                                title: "שתי תנועות והתהפכות על הגב - תרגיל 2.5",
+                                description: "דחיפת הקיר לעשות שתי תנועות, בועות ולהתפך על הגב. \n תרגיל מעולה למניעת הרמת הראש בחתירה ",
+                                driveId: "1f8RGXVwj6_hTkvWvJ_fAjQ_lcmXhoZ8l"
+                            },
+                            {
+                                title: "תרגול מנח צידי",
+                                description: "2 תנועות חתירה ובתנועה השלישית סיבוב למנח צידי והמשך תנועות רגליים עד לסיום. יד קדמית מנחה וראש נח על הכתף. טונוס בכף היד. \n את התרגיל מבצעים ממרכז הבריכה כוון שהרגליים מתעייפות.",
+                                driveId: "1L0wAWaH_1qOx8MOh5ru7Qk8M54wj9ByB"
+                            },
+                            {
+                                title: "חתירה מסילות + מנח צידי - צד ימין",
+                                description: "חץ בהחזקת מסילות + 2 תנועות ידיים -  מעבר למנח צידי, מתחילים בימין",
+                                driveId: "1k-kUjpNdoemANfdQSdo5amYQ7uDXdhAK"
+                            },
+                            {
+                                title: "חתירה מסילות + מנח צידי - צד שמאל",
+                                description: "חץ בהחזקת מסילות + 2 תנועות ידיים -  מעבר למנח צידי, מתחילים בשמאל",
+                                driveId: "1SDyBVWhjmnAXDdB3GqWneoc5fbjgqsfK"
+                            },
+                            {
+                                title: "2.5 תנועות למנח צידי",
+                                description: "סרטון נוסף של התרגיל 2.5",
+                                driveId: "1OoxqAfGoyaXe6TXGJk0yWhb7nt_Gw5Hl"
+                            },
+                            {
+                                title: "כלום-בועות-אוויר עם עזרת המדריך",
+                                description: " התלמיד מתקשה ולכן המורה נוגעת לו בראש כשהוא צריך להוציא את הראש ולנשום וקצת עוזרת לו לכוון. נגיעה אחת שווה אלף מילים",
+                                driveId: "1-M-fmRUmmnQFNnjrwXLNPJd6qOyFshuj"
+                            },
+                            {
+                                title: "כלום-בועות-אוויר - 2 מחזורי תנועה",
+                                description: "מחזורי תנועה של כלום-בועות-אוויר ועצירה בסיום 2",
+                                driveId: "1chiu9Vdc5D4TxIJutk5M6tV0XIDjPJvT"
+                            },
+                            {
+                                title: "חתירה - נשימה כל 3 על הקיר",
+                                description: "כתפיים במים. שתי ידיים על הקיר. רגליים על הרצפה/ באוויר תלוי ציפה/נודל. תרגול של תנועות הידיים עם הנשימה למס' מחזורי תנועה.",
+                                driveId: "1mqIDUwRNFCpIvTC3mtkJK0fXvHIFjBq3"
+                            },
+                            {
+                                title: "סגנון חתירה - נשימה כל 3",
+                                description: "בתרגול המתאמנים מבצעים בריכה אחת בסגנון חתירה עם נשימה כל שלוש. הסלוגן: כלום-בועות-אוויר. \n דגשים: שחייה ״לא מאומצת״ ושקטה",
+                                driveId: "1-lOJRDpJbKBQQf8dL6bVkl3ADNx60ROc"
+                            },
+                            {
+                                title: "סגנון חתירה - נשימה כל 3 (2)",
+                                description: "בתרגול המתאמנים מבצעים בריכה אחת בסגנון חתירה עם נשימה כל שלוש. הסלוגן: כלום-בועות-אוויר. \n דגשים: שחייה ״לא מאומצת״ ושקטה",
+                                driveId: "13Z34KvxSdPeawJBjU6jmL7mZqELstygt"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                category:  "סגנון גב",
+                isGroup: true,
+                accent: "#D8A8D0",
+                subcategories: [
+                     {
+                        category: "רגליים גב (חתירה)",
+                        accent: "#ADA8EF",
+                        description: "לימוד טכניקת רגליים גב",
+                        videos: [
+                            {
+                                title: "תרגול תנועת רגליים בגב",
+                                description: "יציאה מהקיר על הגב, מסתכלים שברכיים בתוך המים ידיים לצידי הגוף ומתחילים תנועת רגליים עם דגש ראש לאחורה. גוף ארוך ומתחילים לפדל ברגליים עד דגש על לא הוציא את הברכיים החוצה ",
+                                driveId: "1_aPGEawobiwmGW_xpmLcHtf5njkQXf0D"
+                            },
+                            {
+                                title: "תרגול רגליים בגב",
+                                description: "יציאה מהקיר על הגב ידיין לצידי הגוף, ומתחילים תנועת רגליים. ",
+                                driveId: "1VC_E3tL4FIwnDnv1hQRPQP0_t5OzQzTI"
+                            },
+                            {
+                                title: "קימה מהגב",
+                                description: " שוכבים על הגב מקפלים את הברכיים, ראש לכיוון הברכיים ידיים לאחורה. ואז קמים",
+                                driveId: "1_-mqKCtM7cSbPTRdplbb5pAcx9vlqvc2"
+                            },
+                            {
+                                title: "אחיזה שלשם: אחיזת עזר בגב – תמיכת המורה בכתפיים",
+                                description: " תרגיל שחייה על הגב שבו המורה אוחז בתלמיד מלפנים, כשהידיים אוחזות פנימה בצידי הכתפיים מאחור לצורך תמיכה ויציבות. האחיזה מאפשרת לתלמיד להתמקד בתנועת הרגליים והגוף מבלי לדאוג לשמירה על הראש מעל המים.",
+                                driveId: "1faYjW-SOJEz-SnPr3peFWBBt770kxkz4"
+                            },
+                            {
+                                title: "תמיכה מתחת לעורף בציפה על הגב",
+                                description: " תרגיל שבו המורה אוחז בתלמיד מתחת לעורף בזמן שהוא שוכב וצף על הגב, ומוביל את תנועת הגוף במים. האחיזה מספקת תמיכה לראש ולצוואר ומאפשרת לתלמיד להירגע ולשמור על ציפה יציבה",
+                                driveId: "1febrjvxW6zlvxGtlC7XlTn3dcqEjqB7h"
+                            },
+                            {
+                                title: "הובלת תנועה בגב – אחיזה בכתפיים מאחור",
+                                description: "תרגיל שבו המורה אוחז בתלמיד בכתפיים מאחור בזמן שהתלמיד שוכב וצף על הגב, ומוביל את התנועה במים. האחיזה מאפשרת לתלמיד לשמור על תנוחת גוף יציבה תוך שהמורה שולט בקצב ובכיוון התנועה.",
+                                driveId: "1_Xd7CTmvDm-Cgu2sw2uwbgqZBpV24uhA"
+                            }
+                        ]
+                     },
+                    {
+                        category: "ידיים גב (חתירה)",
+                        accent: "#EFAEBE",
+                        description: "לימוד טכניקת ידיים גב",
+                        videos: [
+                            {
+                                // סרטון ראשון
+                                title: "גב - טיפוס ידיים בהחלפה לבסיס ציפה צר",
+                                description: " מעבר מבסיס ציפה רחב לצר בסגנון הגב . דחיפת הקיר בגלישה על הגב עם שתי הדייים לצד הגוף. יד מטפסת לאט לאורך הגוף. תרגול של שתי הידיים לאורך הבריכה",
+                                driveId: "1_Gw-ka5lI1tD34g9jutkT-sraM3UQA8x"
+                            },
+                            {
+                                title: "גב - טיפוס יד *אחת* לבסיס ציפה צר",
+                                description: "תרגול שעוזר להבנת המסילות והיד המנחה את הגוף. המתרגל יוצא מהקיר וסופר. כל 5 הוא מקדם את היד למיקום אחר: 1. ירך 2. מותן 3. כתף 4. ראש   5. יד מובילה. התרגול הוא רק ביד אחת.",
+                                driveId: "1HpkxOyqUy4MSsEqDBRWVePxwwme6ABzC"
+                            },
+                            {
+                                title: "יציאה מהקיר בגב – סחיבת יד לאורך הגוף",
+                                description: "תרגיל גב המתחיל ביציאה מהקיר עם תנועת רגליים וידיים בצדי הגוף, כאשר השחיין שוכב על הגב ומביט לעבר הדגלים. היד הימנית מחליקה לאט לאורך צד הגוף עד שהיא מגיעה למעלה בקו ישר עם הכתף.",
+                                driveId: "1gpkLaVqXjJhtmp51-yiuJ5cOzb4rTFvX"
+                            },
+                            {
+                                title: "יציאה מהקיר בגב – סחיבת יד לאורך הגוף",
+                                description: "תרגיל גב המתחיל ביציאה מהקיר עם תנועת רגליים וידיים בצדי הגוף, כאשר השחיין שוכב על הגב ומביט לעבר הדגלים. היד הימנית מחליקה לאט לאורך צד הגוף עד שהיא מגיעה למעלה בקו ישר עם הכתף.",
+                                driveId: "1Pfq7GytOfPvZHgsIE4nzJ2muKlWHe_8J"
+                            },
+                            {
+                                title: "יציאה מהקיר בגב – סחיבת יד לאורך הגוף",
+                                description: "תרגיל גב המתחיל ביציאה מהקיר עם תנועת רגליים וידיים בצדי הגוף, כאשר השחיין שוכב על הגב ומביט לעבר הדגלים. היד הימנית מחליקה לאט לאורך צד הגוף עד שהיא מגיעה למעלה בקו ישר עם הכתף. שהיד מגיעה למעלה מתהפכים על הבטן",
+                                driveId: "1tg78da2qoMcvejIitS59Q3dmqU0DtBT7"
+                            },
+                            {
+                                title: "התהפכות מהגב לבטן",
+                                description: "שוכבים על הגב ומתהפכים ישירות לבטן פעם צד שמאל פעם ימין",
+                                driveId: "1BoMAHn9P49oC9q65z9X_YkKNtStroKo7"
+                            }
+                   
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        function filterGallery() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            renderGallery(query);
+        }
+
+        // --- כלי צבע: הופך HEX ל"r,g,b" עבור שימוש ב-rgba() בתוך CSS variables ---
+        function hexToRgb(hex) {
+            const clean = hex.replace('#', '');
+            const r = parseInt(clean.substring(0, 2), 16);
+            const g = parseInt(clean.substring(2, 4), 16);
+            const b = parseInt(clean.substring(4, 6), 16);
+            return `${r}, ${g}, ${b}`;
+        }
+
+        // מבהיר צבע HEX לכיוון לבן, ליצירת גוון רקע עדין תואם
+        function tint(hex, amount) {
+            const clean = hex.replace('#', '');
+            const r = parseInt(clean.substring(0, 2), 16);
+            const g = parseInt(clean.substring(2, 4), 16);
+            const b = parseInt(clean.substring(4, 6), 16);
+            const nr = Math.round(r + (255 - r) * amount);
+            const ng = Math.round(g + (255 - g) * amount);
+            const nb = Math.round(b + (255 - b) * amount);
+            return `rgb(${nr}, ${ng}, ${nb})`;
+        }
+
+        // מכהה צבע HEX לכיוון שחור, ליצירת גרסת טקסט קריאה מתוך גוון פסטל בהיר
+        function darken(hex, amount) {
+            const clean = hex.replace('#', '');
+            const r = parseInt(clean.substring(0, 2), 16);
+            const g = parseInt(clean.substring(2, 4), 16);
+            const b = parseInt(clean.substring(4, 6), 16);
+            const nr = Math.round(r * (1 - amount));
+            const ng = Math.round(g * (1 - amount));
+            const nb = Math.round(b * (1 - amount));
+            return `rgb(${nr}, ${ng}, ${nb})`;
+        }
+
+        // בונה מחרוזת style עם משתני CSS של הצבע, לשימוש על מיכל (section/div)
+        // --accent הוא הגוון הפסטל המלא (לרקעים/נקודות/פסים), --accent-text גרסה כהה יותר לטקסט קריא
+        function accentStyle(hex) {
+            return `--accent:${hex}; --accent-rgb:${hexToRgb(hex)}; --accent-text:${darken(hex, 0.42)};`;
+        }
+
+        function videoCardHTML(v) {
+            const hasRealId = v.driveId && v.driveId !== 'להשלים';
+            const thumbnailImg = hasRealId
+                ? `<img src="https://drive.google.com/thumbnail?id=${v.driveId}&sz=w500"
+                        alt="${v.title.replace(/"/g,'&quot;')}"
+                        loading="lazy" decoding="async"
+                        class="absolute inset-0 w-full h-full object-cover"
+                        onerror="this.remove()">`
+                : '';
+            return `
+                <div class="video-card-modern group" 
+                    onclick='openModal(
+                    "${v.driveId}",
+                    "${v.title.replace(/"/g,"&quot;").replace(/\n/g,"\\n")}",
+                    "${v.description.replace(/"/g,"&quot;").replace(/\n/g,"\\n")}"
+                    )'>
+                    <div class="relative aspect-[9/16] max-h-[320px] mx-auto w-full bg-slate-900 rounded-2xl overflow-hidden mb-4 shadow-sm border border-slate-200 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-slate-900 to-slate-800"></div>
+                        ${thumbnailImg}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-black/25 flex flex-col items-center justify-center p-4 text-center">
+                            <div class="play-overlay w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current ml-1" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                            <span class="text-[11px] font-bold text-white/90 tracking-wider drop-shadow">לחצו לצפייה</span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-1 group-hover:text-blue-700 transition-colors text-center md:text-right">${v.title}</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed category-description text-center md:text-right">${v.description}</p>
+                </div>
+            `;
+        }
+
+        // מחזיר את רשימת הסרטונים התואמים לחיפוש עבור תת-קטגוריה/קטגוריה רגילה
+        function getFilteredVideos(node, filterTerm, parentMatches) {
+            const nodeMatches = parentMatches ||
+                node.category.toLowerCase().includes(filterTerm) ||
+                node.description.toLowerCase().includes(filterTerm);
+
+            return node.videos.filter(v =>
+                nodeMatches ||
+                v.title.toLowerCase().includes(filterTerm) ||
+                v.description.toLowerCase().includes(filterTerm)
+            );
+        }
+
+        function renderGallery(filterTerm = "") {
+            const gallery = document.getElementById('video-gallery');
+            const noResults = document.getElementById('no-results');
+            gallery.innerHTML = '';
+
+            let hasResults = false;
+
+            DATA.forEach((section, idx) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.id = `cat-${idx}`;
+                sectionEl.className = 'scroll-mt-28';
+
+                if (section.isGroup) {
+                    // --- קטגוריית-על עם תתי-קטגוריות ---
+                    const parentMatches = section.category.toLowerCase().includes(filterTerm);
+                    const groupAccent = section.accent || '#1d4ed8';
+
+                    const subBlocks = section.subcategories.map((sub, subIdx) => {
+                        const filteredVideos = getFilteredVideos(sub, filterTerm, parentMatches);
+                        if (filteredVideos.length === 0) return '';
+                        const subAccent = sub.accent || groupAccent;
+                        return `
+                            <div class="relative scroll-mt-28 rounded-3xl p-6 md:p-8 border" id="cat-${idx}-${subIdx}" style="${accentStyle(subAccent)} background: ${tint(subAccent, 0.88)}; border-color: ${tint(subAccent, 0.55)};">
+                                <div class="category-accent" style="width:32px; height:3px;"></div>
+                                <h3 class="text-xl md:text-2xl font-extrabold mb-2" style="color:var(--accent-text);">${sub.category}</h3>
+                                <p class="text-slate-500 font-medium text-base max-w-2xl category-description">${sub.description}</p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                                    ${filteredVideos.map(videoCardHTML).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    if (subBlocks.trim().length > 0) {
+                        hasResults = true;
+                        sectionEl.style = accentStyle(groupAccent);
+                        sectionEl.innerHTML = `
+                            <div class="rounded-[2rem] p-6 md:p-12 border" style="background: linear-gradient(160deg, ${tint(groupAccent, 0.72)} 0%, ${tint(groupAccent, 0.85)} 100%); border-color: ${tint(groupAccent, 0.4)};">
+                                <div class="mb-10 md:mb-14">
+                                    <div class="category-accent" style="width:64px; height:6px;"></div>
+                                    <h2 class="text-4xl md:text-5xl font-black text-slate-900">${section.category}</h2>
+                                </div>
+                                <div class="space-y-14 md:space-y-16 pr-6 md:pr-10 border-r-4" style="border-color: ${tint(groupAccent, 0.3)};">
+                                    ${subBlocks}
+                                </div>
+                            </div>
+                        `;
+                        gallery.appendChild(sectionEl);
+                    }
+
+                } else {
+                    // --- קטגוריה רגילה (ללא תתי-קטגוריות) ---
+                    const filteredVideos = getFilteredVideos(section, filterTerm, false);
+                    const accent = section.accent || '#1d4ed8';
+
+                    if (filteredVideos.length > 0) {
+                        hasResults = true;
+                        sectionEl.style = accentStyle(accent);
+                        sectionEl.innerHTML = `
+                            <div class="rounded-[2rem] p-6 md:p-12 border" style="background: linear-gradient(160deg, ${tint(accent, 0.72)} 0%, ${tint(accent, 0.85)} 100%); border-color: ${tint(accent, 0.4)};">
+                                <div class="category-accent"></div>
+                                <h2 class="text-3xl font-black text-slate-900 mb-2">${section.category}</h2>
+                                <p class="text-slate-500 font-medium text-lg max-w-2xl category-description">${section.description}</p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+                                    ${filteredVideos.map(videoCardHTML).join('')}
+                                </div>
+                            </div>
+                        `;
+                        gallery.appendChild(sectionEl);
+                    }
+                }
+            });
+
+            noResults.classList.toggle('hidden', hasResults);
+        }
+
+        // בונה את תפריט הניווט העליון (קטגוריות-על + תתי-קטגוריות בתפריט נשלף)
+        function buildCategoryNav() {
+            const nav = document.getElementById('category-nav');
+            nav.innerHTML = DATA.map((section, idx) => {
+                const sectionId = `cat-${idx}`;
+                const accent = section.accent || '#1d4ed8';
+
+                if (section.isGroup) {
+                    const dropdownItems = section.subcategories.map((sub, subIdx) => {
+                        const subAccent = sub.accent || accent;
+                        return `
+                        <a href="#cat-${idx}-${subIdx}" class="nav-dropdown-item" style="${accentStyle(subAccent)}" onclick="scrollToSection(event, 'cat-${idx}-${subIdx}')">
+                            <span class="nav-dot" style="background:${subAccent};"></span>
+                            ${sub.category}
+                        </a>
+                    `;
+                    }).join('');
+
+                    return `
+                        <div class="nav-item" style="${accentStyle(accent)}">
+                            <a href="#${sectionId}" class="nav-pill" onclick="scrollToSection(event, '${sectionId}')">
+                                <span class="nav-dot" style="background:${accent};"></span>
+                                ${section.category}
+                                <svg class="nav-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </a>
+                            <div class="nav-dropdown">
+                                ${dropdownItems}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="nav-item" style="${accentStyle(accent)}">
+                        <a href="#${sectionId}" class="nav-pill" onclick="scrollToSection(event, '${sectionId}')">
+                            <span class="nav-dot" style="background:${accent};"></span>
+                            ${section.category}
+                        </a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // גלילה חלקה לקטגוריה/תת-קטגוריה, תוך איפוס החיפוש אם היה פעיל כדי שהיעד בטוח יהיה גלוי
+        function scrollToSection(event, id) {
+            event.preventDefault();
+
+            const searchInput = document.getElementById('search-input');
+            const needsReset = searchInput.value.trim().length > 0;
+
+            if (needsReset) {
+                searchInput.value = '';
+                renderGallery('');
+            }
+
+            requestAnimationFrame(() => {
+                const target = document.getElementById(id);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        // פתיחה ישירה מותאמת לרזולוציה אנכית מלאה במובייל (ללא שוליים מיותרים)
+        /* function watchVideo(driveId) {
+            const videoUrl = `https://drive.google.com/file/d/${driveId}/view?usp=drivesdk`;
+            window.location.href = videoUrl;
+        }
+        */
+
+        function openModal(driveId,title,description){
+
+    document.getElementById("video-title").innerText = title;
+    document.getElementById("video-description").innerText = description;
+
+    document.getElementById("video-frame").src =
+        `https://drive.google.com/file/d/${driveId}/preview`;
+
+    document.getElementById("video-modal").classList.remove("hidden");
+
+    document.body.style.overflow="hidden";
+}
+
+function closeModal(){
+
+    document.getElementById("video-frame").src="";
+
+    document.getElementById("video-modal").classList.add("hidden");
+
+    document.body.style.overflow="";
+}
+
+        // מציג/מסתיר את כפתור "חזרה למעלה" לפי מיקום הגלילה
+        function initBackToTop() {
+            const btn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                btn.classList.toggle('visible', window.scrollY > 500);
+            });
+        }
+
+        function hidePageLoader() {
+            const loader = document.getElementById('page-loader');
+            if (loader) loader.classList.add('loader-hidden');
+        }
+
+        function initPage() {
+            renderGallery();
+            buildCategoryNav();
+            initBackToTop();
+            // מסתיר את מסך הטעינה ברגע שהתוכן מוכן על המסך
+            requestAnimationFrame(() => requestAnimationFrame(hidePageLoader));
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPage);
+        } else {
+            initPage();
+        }
+    </script>
+</body>
+</html>      
+
